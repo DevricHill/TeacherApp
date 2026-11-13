@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TeacherApp.MainPage"
+            
+             xmlns:model="clr-namespace:TeacherApp.Models"
+             xmlns:viewmodel="clr-namespace:TeacherApp.ViewModels"
+             >
+
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *" 
+          ColumnDefinitions=".50*, .50*" RowSpacing="20" Margin="10">
+        <Label Text="Create a new Student" Grid.Row="0" Grid.Column="0" Padding="10"/>
+        
+        <Button x:DataType="viewmodel:StudentViewModel" Text="Create" Grid.Row="0" Grid.Column="1" 
+                Command="{Binding CreateStudentsCommand}" />
+
+        <Label Text="Update a new Student" Grid.Row="1" Grid.Column="0" Padding="10"/>
+        <Button Text="Update" Grid.Row="1" Grid.Column="1" x:DataType="viewmodel:StudentViewModel" Command="{Binding UpdateStudentCommand}"/>
+        
+        <Label Text="Delete a new Student" Grid.Row="2" Grid.Column="0" Padding="10"/>
+        <Button x:DataType="viewmodel:StudentViewModel" Command="{Binding DeleteStudentCommand}" Text="Delete" Grid.Row="2" Grid.Column="1"/>
+
+        <Label Text="Student ID" Grid.Row="3" Grid.Column="0"/>
+        <Entry x:DataType="viewmodel:StudentViewModel" Text ="{Binding SelectedStudent.StudentID}" Placeholder="Not Shown" IsEnabled="False" Grid.Row="3" Grid.Column="1"/>
+
+        <Label Text="Enter First Name" Grid.Row="4" Grid.Column="0" Padding="10"/>
+        <Entry Text="{Binding FirstName}" Placeholder="First Name" Grid.Row="4" Grid.Column="1"/>
+
+        <Label Text="Enter Last Name" Grid.Row="5" Grid.Column="0" Padding="10"/>
+        <Entry Text="{Binding LastName}" Placeholder="Last Name" Grid.Row="5" Grid.Column="1"/>
+        
+        <Label Text="Enter Grade Level" Grid.Row="6" Grid.Column="0" Padding="10"/>
+        <Entry Keyboard="Numeric" Text="{Binding GradeLevel}" Placeholder="Grade Level" Grid.Row="6" Grid.Column="1"/>
+
+        <Label Grid.Row="7" Grid.ColumnSpan="2"
+       Text="{Binding Students.Count, StringFormat='Count: {0}'}" />
+
+
+        <!-- table header -->
+        <Grid Grid.Row="7" Grid.ColumnSpan="2"
+              ColumnDefinitions="2*,2*,*"
+              BackgroundColor="{StaticResource Primary}" Padding="8">
+            <Label Grid.Column="0" Text="First Name" FontAttributes="Bold" TextColor="White"/>
+            <Label Grid.Column="1" Text="Last Name"  FontAttributes="Bold" TextColor="White"/>
+            <Label Grid.Column="2" Text="Grade"      FontAttributes="Bold" TextColor="White"/>
+        </Grid>
+
+        <!-- table rows -->
+        <CollectionView Grid.Row="8" Grid.ColumnSpan="2"
+                ItemsSource="{Binding Students}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedStudent}">
+            <CollectionView.EmptyView>
+                <Label Text="No students yet" HorizontalOptions="Center" Margin="0,20"/>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Student">
+                    <Grid ColumnDefinitions="2*,2*,*" Padding="8">
+                        <Label Grid.Column="0" Text="{Binding FirstName}" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="{Binding LastName}"  VerticalOptions="Center"/>
+                        <Label Grid.Column="2" Text="{Binding GradeLevel}" VerticalOptions="Center"/>
+                        <BoxView Grid.ColumnSpan="3" HeightRequest="1"
+                                 Color="LightGray" VerticalOptions="End"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+    </Grid>
+
+</ContentPage>
